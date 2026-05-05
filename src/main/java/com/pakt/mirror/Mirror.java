@@ -108,7 +108,6 @@ public class Mirror extends Application {
             try {
                 currentWebcam.open();
             } catch (WebcamException e) {
-                errorMsg.set("Error opening Webcam: " + e.getMessage());
                 loadWebcam(Webcam.getDefault());
             }
             camView.setVisible(true);
