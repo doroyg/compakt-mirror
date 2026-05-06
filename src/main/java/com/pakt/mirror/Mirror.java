@@ -168,8 +168,16 @@ public class Mirror extends Application {
     }
 
     private void createCompaktMirrorDir() {
-        compaktMirrorDir = Paths.get(
-                System.getProperty("user.home"), "Pictures", "CompaktMirror");
+        var home = System.getProperty("user.home");
+        var picturesDir = Paths.get(home, "Pictures");
+        if (Files.notExists(picturesDir)) {
+            try {
+                Files.createDirectory(picturesDir);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        compaktMirrorDir = Paths.get(home, "Pictures", "CompaktMirror");
         if (Files.notExists(compaktMirrorDir)) {
             try {
                 Files.createDirectory(compaktMirrorDir);
@@ -239,7 +247,7 @@ public class Mirror extends Application {
 
     private String getCaptureFileName() {
         var now = LocalDateTime.now();
-        var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH:mm:ss");
+        var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
         var formattedDate = now.format(formatter);
         return "compakt-mirror_capture_" + formattedDate + ".png";
     }
